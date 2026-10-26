@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DeepEye-SQL 三道真实运行问题的交互案例预览：查看阶段耗时、SQL、只读查询结果与用量。">
+  <title>DeepEye-SQL · 历史实测案例预览</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-copy">
+      <span class="eyebrow">TEXT-TO-SQL · RECORDED RUNS</span>
+      <h1>DeepEye-SQL</h1>
+      <p>选择真实运行案例，查看检索、生成、修订、选择与只读执行的记录。</p>
+      <a class="hero-back" href="../#data-analysis">← 返回作品集</a>
+    </div>
+    <div class="hero-mark" aria-hidden="true"><span>SQL</span></div>
+  </header>
+
+  <main>
+    <nav class="tabs" aria-label="演示页面">
+      <button class="tab active" data-tab="query" type="button">案例运行回放</button>
+      <button class="tab" data-tab="evaluation" type="button">离线评测结果</button>
+    </nav>
+    <p class="preview-notice"><strong>历史实测记录 · 2026-10-26</strong>　此页面只展示保存的 3 次运行结果。播放是浏览记录，不会调用模型或执行新查询；暂不支持输入新问题。</p>
+
+    <section id="query-panel" class="panel active">
+      <div class="workspace-grid">
+        <section id="query-form" class="card input-card">
+          <div class="card-heading">
+            <div><span class="step-number">01</span><h2>提出数据问题</h2></div>
+            <span id="service-state" class="badge success">记录已保存</span>
+          </div>
+
+          <label for="database">数据库</label>
+          <select id="database" aria-label="数据库"><option>California Schools</option></select>
+
+          <label for="example">示例问题</label>
+          <select id="example" aria-label="选择示例问题"></select>
+
+          <label for="question">自然语言问题</label>
+          <textarea id="question" rows="5" readonly aria-label="已保存的自然语言问题"></textarea>
+
+          <label for="evidence">补充证据 <span class="optional">原始运行口径</span></label>
+          <textarea id="evidence" rows="3" readonly aria-label="已保存的补充证据"></textarea>
+
+          <button id="run-button" class="primary" type="button">查看保存的分析结果 <span>→</span></button>
+          <button id="replay-button" class="secondary replay-button" type="button">播放阶段记录 ▶</button>
+          <p class="form-note">结果、阶段耗时和用量取自本地成功运行的记录；各阶段播放速度经过压缩，不代表真实等待时间。</p>
+        </section>
+
+        <section class="card timeline-card">
+          <div class="card-heading"><div><span class="step-number">02</span><h2>流水线进度</h2></div><span id="elapsed-live" class="mono muted">—</span></div>
+          <div id="request-meta" class="request-meta">选择案例后，可以查看保存的阶段状态。</div>
+          <ol id="timeline" class="timeline"></ol>
+          <div id="stage-inspect" class="stage-inspect"></div>
+        </section>
+      </div>
+
+      <section id="result-section" class="results hidden">
+        <div class="section-heading"><div><span class="step-number">03</span><h2>分析结果</h2></div><span id="result-badge" class="badge"></span></div>
+        <div id="metrics" class="metric-grid"></div>
+
+        <div class="sql-grid">
+          <article class="card sql-card"><header><span>初始生成</span><button class="copy" data-copy="generated-sql">复制</button></header><pre><code id="generated-sql"></code></pre></article>
+          <article class="card sql-card accent"><header><span>Checker 修订</span><button class="copy" data-copy="revised-sql">复制</button></header><pre><code id="revised-sql"></code></pre></article>
+          <article class="card sql-card final"><header><span>最终选择</span><button class="copy" data-copy="final-sql">复制</button></header><pre><code id="final-sql"></code></pre></article>
+        </div>
+
+        <div class="details-grid">
+          <article class="card"><div class="card-heading"><h3>关联 Schema</h3></div><div id="schema-chips" class="chips"></div></article>
+          <article class="card"><div class="card-heading"><h3>阶段耗时</h3></div><div id="stage-times" class="stage-times"></div></article>
+        </div>
+
+        <article class="card table-card">
+          <div class="card-heading"><h3>查询结果</h3><span id="row-note" class="muted"></span></div>
+          <div id="result-message" class="message hidden"></div>
+          <div class="table-wrap"><table id="result-table"></table></div>
+        </article>
+      </section>
+    </section>
+
+    <section id="evaluation-panel" class="panel">
+      <div class="section-heading">
+        <div><span class="step-number">EVAL</span><h2>离线评测结果</h2></div>
+        <button id="refresh-evals" class="secondary">刷新结果</button>
+      </div>
+      <p class="section-intro">这里只读取已保存的评测记录，不会重新启动实验。三道交互案例用于展示页面与流程；50 题对照是另一组固定样本，不代表官方榜单成绩。</p>
+      <div id="evaluation-list" class="evaluation-list"></div>
+      <section id="evaluation-detail" class="hidden"></section>
+    </section>
+  </main>
+
+  <footer>DeepEye-SQL · <a href="https://github.com/liunian66666/text2Sql" target="_blank" rel="noopener noreferrer">我的工程扩展源码 ↗</a> · 基于 <a href="https://github.com/HKUSTDial/DeepEye-SQL" target="_blank" rel="noopener noreferrer">上游研究项目 ↗</a></footer>
+  <script src="./app.js" defer></script>
+</body>
+</html>

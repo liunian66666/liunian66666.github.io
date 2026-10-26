@@ -1,0 +1,204 @@
+{
+  "kind": "recorded-run-preview",
+  "recorded_on": "2026-10-26",
+  "source_repository": "https://github.com/liunian66666/text2Sql",
+  "evaluation_report": "https://github.com/liunian66666/text2Sql/blob/master/evals/demo-fast/report.md",
+  "cases": [
+    {
+      "id": "question-0",
+      "title": "免费餐比例",
+      "subtitle": "口径理解：Alameda County 的 K-12 学生",
+      "question": "What is the highest eligible free rate for K-12 students in the schools in Alameda County?",
+      "evidence": "Eligible free rate for K-12 = `Free Meal Count (K-12)` / `Enrollment (K-12)`",
+      "database": "California Schools",
+      "elapsed_seconds": 47.31,
+      "stage_seconds": {
+        "value_retrieval": 5.64,
+        "few_shot_preparation": 19.37,
+        "schema_linking": 8.163,
+        "sql_generation": 14.059,
+        "sql_revision": 0.023,
+        "sql_selection": 0.015,
+        "execution": 0.006
+      },
+      "usage": {
+        "total_tokens": 53410,
+        "chat_tokens": 53288,
+        "embedding_tokens": 122,
+        "model_responses": 12,
+        "chat_responses": 9
+      },
+      "artifacts": {
+        "generated_sql": "SELECT MAX(\"Free Meal Count (K-12)\" / \"Enrollment (K-12)\") FROM frpm WHERE \"County Name\" = 'Alameda'",
+        "revised_sql": "SELECT MAX(\"Free Meal Count (K-12)\" / \"Enrollment (K-12)\") FROM frpm WHERE \"County Name\" = 'Alameda'",
+        "final_sql": "SELECT MAX(\"Free Meal Count (K-12)\" / \"Enrollment (K-12)\") FROM frpm WHERE \"County Name\" = 'Alameda'",
+        "linked_schema": {
+          "frpm": [
+            "Enrollment (K-12)",
+            "County Name",
+            "Percent (%) Eligible Free (K-12)",
+            "Free Meal Count (K-12)"
+          ],
+          "satscores": [
+            "cname"
+          ],
+          "schools": [
+            "AdmLName1",
+            "MailCity",
+            "GSoffered",
+            "GSserved",
+            "County",
+            "City"
+          ]
+        },
+        "generated_candidate_count": 3,
+        "revised_candidate_count": 3,
+        "retrieved_value_columns": 62,
+        "few_shot_example_count": 5
+      },
+      "columns": [
+        "MAX(\"Free Meal Count (K-12)\" / \"Enrollment (K-12)\")"
+      ],
+      "rows": [
+        [
+          1.0
+        ]
+      ],
+      "execution_correct": true,
+      "multiset_match": true
+    },
+    {
+      "id": "question-2",
+      "title": "特许学校邮编",
+      "subtitle": "条件过滤：Fresno County Office of Education",
+      "question": "Please list the zip code of all the charter schools in Fresno County Office of Education.",
+      "evidence": "Charter schools refers to `Charter School (Y/N)` = 1 in the table fprm",
+      "database": "California Schools",
+      "elapsed_seconds": 44.84,
+      "stage_seconds": {
+        "value_retrieval": 4.692,
+        "few_shot_preparation": 20.526,
+        "schema_linking": 7.476,
+        "sql_generation": 12.046,
+        "sql_revision": 0.041,
+        "sql_selection": 0.014,
+        "execution": 0.006
+      },
+      "usage": {
+        "total_tokens": 52366,
+        "chat_tokens": 52227,
+        "embedding_tokens": 139,
+        "model_responses": 12,
+        "chat_responses": 9
+      },
+      "artifacts": {
+        "generated_sql": "SELECT DISTINCT T1.Zip FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.\"Charter School (Y/N)\" = 1 AND T2.\"District Name\" = 'Fresno County Office of Education'",
+        "revised_sql": "SELECT DISTINCT T1.Zip FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.\"Charter School (Y/N)\" = 1 AND T2.\"District Name\" = 'Fresno County Office of Education'",
+        "final_sql": "SELECT DISTINCT T1.Zip FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.\"Charter School (Y/N)\" = 1 AND T2.\"District Name\" = 'Fresno County Office of Education'",
+        "linked_schema": {
+          "frpm": [
+            "County Name",
+            "Charter School (Y/N)",
+            "CDSCode",
+            "District Name"
+          ],
+          "schools": [
+            "City",
+            "County",
+            "School",
+            "Zip",
+            "Charter",
+            "MailCity",
+            "District",
+            "CDSCode"
+          ],
+          "satscores": [
+            "cname",
+            "dname"
+          ]
+        },
+        "generated_candidate_count": 3,
+        "revised_candidate_count": 3,
+        "retrieved_value_columns": 62,
+        "few_shot_example_count": 5
+      },
+      "columns": [
+        "Zip"
+      ],
+      "rows": [
+        [
+          "93726-5309"
+        ],
+        [
+          "93628-9602"
+        ],
+        [
+          "93706-2611"
+        ],
+        [
+          "93726-5208"
+        ],
+        [
+          "93706-2819"
+        ]
+      ],
+      "execution_correct": true,
+      "multiset_match": true
+    },
+    {
+      "id": "question-5",
+      "title": "虚拟学校统计",
+      "subtitle": "多表关联：学校与 SAT 成绩",
+      "question": "How many schools with an average score in Math greater than 400 in the SAT test are exclusively virtual?",
+      "evidence": "Exclusively virtual refers to Virtual = 'F'",
+      "database": "California Schools",
+      "elapsed_seconds": 32.71,
+      "stage_seconds": {
+        "value_retrieval": 4.827,
+        "few_shot_preparation": 13.041,
+        "schema_linking": 5.571,
+        "sql_generation": 9.154,
+        "sql_revision": 0.053,
+        "sql_selection": 0.015,
+        "execution": 0.017
+      },
+      "usage": {
+        "total_tokens": 47660,
+        "chat_tokens": 47522,
+        "embedding_tokens": 138,
+        "model_responses": 12,
+        "chat_responses": 9
+      },
+      "artifacts": {
+        "generated_sql": "SELECT COUNT(T1.CDSCode) FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T1.Virtual = 'F' AND T2.AvgScrMath > 400",
+        "revised_sql": "SELECT COUNT(T1.CDSCode) FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T1.Virtual = 'F' AND T2.AvgScrMath > 400",
+        "final_sql": "SELECT COUNT(T1.CDSCode) FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T1.Virtual = 'F' AND T2.AvgScrMath > 400",
+        "linked_schema": {
+          "satscores": [
+            "cds",
+            "AvgScrMath"
+          ],
+          "schools": [
+            "CDSCode",
+            "Virtual",
+            "School"
+          ]
+        },
+        "generated_candidate_count": 3,
+        "revised_candidate_count": 3,
+        "retrieved_value_columns": 62,
+        "few_shot_example_count": 5
+      },
+      "columns": [
+        "COUNT(T1.CDSCode)"
+      ],
+      "rows": [
+        [
+          4
+        ]
+      ],
+      "execution_correct": true,
+      "multiset_match": true
+    }
+  ]
+}
